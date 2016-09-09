@@ -6,16 +6,29 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>MVC</title>
   <link rel="stylesheet" href="styles/main.css">
+  <script src="js/react.min.js"></script>
+  <script src="js/react-dom.min.js"></script>
+  <script src="https://js.cx/babel-core/browser.min.js"></script>
 </head>
 <body>
-  <p>MVC</p>
-  <button id="calcUser">Calculate</button>
-  <br><br>
-  <label for="calcData">Input field: x*y</label>
-  <input type="text" id="calcData"/>
-  <br><br>
-  <div id="showResult"></div>
 
-  <script src="js/main.js"></script>
+  <p>React</p>
+
+  <div id="content"></div>
+
+  <script type="text/babel">
+    var HelloWorld = React.createClass({
+        render: function() {
+            return (
+                <h1> Hello world! </h1>
+            );
+        }
+    });
+
+    ReactDOM.render(
+        <HelloWorld />,
+        document.getElementById('content')
+    );
+  </script>
 </body>
 </html>
