@@ -5,30 +5,61 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>MVC</title>
-  <link rel="stylesheet" href="styles/main.css">
-  <script src="js/react.min.js"></script>
-  <script src="js/react-dom.min.js"></script>
+  <link rel="stylesheet" href="styles/app.css">
+  <script src="js/react/react.min.js"></script>
+  <script src="js/react/react-dom.min.js"></script>
   <script src="https://js.cx/babel-core/browser.min.js"></script>
 </head>
 <body>
 
   <p>React</p>
 
+  <p>Please enter 'red borders', 'get button', 'show message' for test</p>
+
   <div id="content"></div>
+  <div id="new"></div>
 
   <script type="text/babel">
-    var HelloWorld = React.createClass({
+    var newButton = React.createElement(
+      'input', {type: 'button', value: 'Button'}, null
+    );
+
+    var BaseInput = React.createClass({
+
+        handleChange: function(event) {
+          var val = event.target.value;
+          console.dir(event.target);
+
+          if (val == 'red borders') event.target.classList.add('border-color');
+          if (val == 'get button') {
+            ReactDOM.render(
+              newButton,
+              document.getElementById('new')
+            );
+          };
+          if (val == 'show message') alert('message');
+        },
+
+        handleClick: function(event) {
+          console.dir(event);
+        },
+
         render: function() {
             return (
-                <h1> Hello world! </h1>
+                <input type='text' placeholder='value'
+                 onClick={this.handleClick} onChange={this.handleChange}/>
             );
         }
+
     });
 
     ReactDOM.render(
-        <HelloWorld />,
+        <BaseInput />,
         document.getElementById('content')
     );
+
+    console.dir(React);
+    console.dir(ReactDOM);
   </script>
 </body>
 </html>
