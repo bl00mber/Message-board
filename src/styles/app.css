@@ -7,20 +7,20 @@ body {
 }
 
 p	{
-		margin:	0	0	5px;
+    margin:	0	0	5px;
 }
 .article	{
-		background:	#FFF;
-		border:	1px	solid	black;
-		width:	600px;
-		margin:	0	0	10px;
-		box-shadow:	2px	2px	5px	-1px	black;
-		padding:	3px	5px;
+    background:	#FFF;
+    border:	1px	solid	black;
+    width:	600px;
+    margin:	0	0	10px;
+    box-shadow:	2px	2px	5px	-1px	black;
+    padding:	3px	5px;
 }
 .news__author	{
-		text-decoration:	underline;
+    text-decoration:	underline;
 }
 .news__count	{
-		margin:	10px	0	0	0;
-		display:	block;
+    margin:	10px	0	0	0;
+    display:	block;
 }
