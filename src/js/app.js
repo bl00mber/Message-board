@@ -1,22 +1,22 @@
-var	my_news	=	[
+var  my_news = [
   {
-    author:	'Yves G',
-    text:	"I didn't try the food. I wasn't there to eat, but to relax.",
+    author:  'Yves G',
+    text:  "I didn't try the food. I wasn't there to eat, but to relax.",
     bigText: 'Just passed the Consumer Review Fairness Act to prevent companies from using gag orders to stop customers from writing honest reviews online.'
   },
   {
-    author:	'Jonathan Haynes',
-    text:	'I worked at Lorem Ipsum full-time (More than a year)',
+    author:  'Jonathan Haynes',
+    text:  'I worked at Lorem Ipsum full-time (More than a year)',
     bigText: "On Friday the company buys lunches for everyone. But they've also decreased how much they will cover over time. It went from $20, down to $15 before tip then down to $15 with tip."
   },
   {
-    author:	'Steve Campion',
-    text:	'62% of job seekers feel better about companies that respond to reviews',
+    author:  'Steve Campion',
+    text:  '62% of job seekers feel better about companies that respond to reviews',
     bigText: 'Astonishing result from blind resume reviews by tech companies. Should this become a best practice in hiring?'
   }
 ];
 
-window.ee	=	new	EventEmitter();
+window.ee  =  new  EventEmitter();
 
 var Article = React.createClass({
   propTypes: {
@@ -36,7 +36,6 @@ var Article = React.createClass({
   readMoreClick: function(e) {
     e.preventDefault();
     this.setState({hidden: false});
-    console.dir(this);
   },
 
   render: function() {
@@ -105,7 +104,7 @@ var Add = React.createClass({
 
   onBtnClickHandler: function(e) {
     e.preventDefault();
-    var	author	=	ReactDOM.findDOMNode(this.refs.new_author).value;
+    var  author  =  ReactDOM.findDOMNode(this.refs.new_author).value;
     var text = ReactDOM.findDOMNode(this.refs.new_text).value;
 
     var item = [{
@@ -117,15 +116,15 @@ var Add = React.createClass({
     window.ee.emit('News.add', item);
   },
 
-  onValidate:	function(e)	{
-    var	author	=	ReactDOM.findDOMNode(this.refs.new_author).value.trim();
+  onValidate: function(e)  {
+    var author = ReactDOM.findDOMNode(this.refs.new_author).value.trim();
     var text = ReactDOM.findDOMNode(this.refs.new_text).value.trim();
     var agree = ReactDOM.findDOMNode(this.refs.checkrule).checked;
 
     if (author && text && agree) {
-      this.setState({btnIsDisabled:	false});
+      this.setState({btnIsDisabled: false});
     } else {
-      this.setState({btnIsDisabled:	true});
+      this.setState({btnIsDisabled: true});
     };
   },
 
@@ -163,7 +162,7 @@ var Add = React.createClass({
   }
 });
 
-var	App	=	React.createClass({
+var App = React.createClass({
   getInitialState: function() {
     return {
       news: my_news
@@ -182,7 +181,7 @@ var	App	=	React.createClass({
     window.ee.removeListener('News.add');
   },
 
-  render:	function() {
+  render: function() {
     return (
       <div className="app">
           <h2>News</h2>
