@@ -16,6 +16,8 @@ var	my_news	=	[
   }
 ];
 
+window.ee	=	new	EventEmitter();
+
 var Article = React.createClass({
   propTypes: {
     data: React.PropTypes.shape({
@@ -34,6 +36,7 @@ var Article = React.createClass({
   readMoreClick: function(e) {
     e.preventDefault();
     this.setState({hidden: false});
+    console.dir(this);
   },
 
   render: function() {
@@ -93,38 +96,99 @@ var News = React.createClass({
     );
   },
 });
+var Add = React.createClass({
+  getInitialState: function() {
+    return {
+      btnIsDisabled: true
+    };
+  },
 
-var TopForm = React.createClass({
+  onBtnClickHandler: function(e) {
+    e.preventDefault();
+    var	author	=	ReactDOM.findDOMNode(this.refs.new_author).value;
+    var text = ReactDOM.findDOMNode(this.refs.new_text).value;
 
-  onBtnClickHandler: function() {
-    console.log(ReactDOM.findDOMNode(this.refs.testInput).value);
-    console.dir(this);
+    var item = [{
+      author: author,
+      text: text,
+      bigText: '...'
+    }];
+
+    window.ee.emit('News.add', item);
+  },
+
+  onValidate:	function(e)	{
+    var	author	=	ReactDOM.findDOMNode(this.refs.new_author).value.trim();
+    var text = ReactDOM.findDOMNode(this.refs.new_text).value.trim();
+    var agree = ReactDOM.findDOMNode(this.refs.checkrule).checked;
+
+    if (author && text && agree) {
+      this.setState({btnIsDisabled:	false});
+    } else {
+      this.setState({btnIsDisabled:	true});
+    };
   },
 
   render: function() {
     return (
-      <div>
-        <input className='test-input'
-         placeholder='Enter a value'
-         defaultValue=''
-         ref='testInput'/>
-        <input className='test-button'
-         type='button'
-         value='send'
-         onClick={this.onBtnClickHandler}/>
-      </div>
+      <form>
+        <input
+          type='text'
+          className='add__author'
+          defaultValue=''
+          placeholder='Enter a author'
+          ref='new_author'
+          onChange={this.onValidate}
+        />
+        <textarea
+          type='textarea'
+          className='add__text'
+          defaultValue=''
+          placeholder='Enter a newstext'
+          ref='new_text'
+          onChange={this.onValidate}
+        ></textarea>
+        <label className='add__checkrule'>
+          <input type='checkbox' ref='checkrule'
+           onChange={this.onValidate}/> I agree with rules
+        </label>
+        <button
+          className='add__btn'
+          onClick={this.onBtnClickHandler}
+          ref='add_btn'
+          disabled={this.state.btnIsDisabled}
+        >Add</button>
+      </form>
     );
   }
 });
 
 var	App	=	React.createClass({
+  getInitialState: function() {
+    return {
+      news: my_news
+    };
+  },
+
+  componentDidMount: function() {
+    var self = this;
+    window.ee.addListener('News.add', function(item) {
+      var nextNews = item.concat(self.state.news);
+      self.setState({news: nextNews});  // re-render
+    });
+  },
+
+  componentWillUnmount: function() {
+    window.ee.removeListener('News.add');
+  },
+
   render:	function() {
     return (
       <div className="app">
           <h2>News</h2>
-          <TopForm/>
-          <br/><br/>
-          <News data={my_news}/>
+          <Add/>
+          <br/>
+          <News data={this.state.news}/>
       </div>
     );
   }
