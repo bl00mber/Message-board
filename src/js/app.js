@@ -16,14 +16,15 @@ var  my_news = [
   }
 ];
 
-window.ee  =  new  EventEmitter();
+window.ee = new EventEmitter();
 
 var Article = React.createClass({
   propTypes: {
     data: React.PropTypes.shape({
       author: React.PropTypes.string.isRequired,
       text: React.PropTypes.string.isRequired,
-      bigText: React.PropTypes.string.isRequired
+      bigText: React.PropTypes.string.isRequired,
+      index: React.PropTypes.number.isRequired
     })
   },
 
@@ -38,6 +39,12 @@ var Article = React.createClass({
     this.setState({hidden: false});
   },
 
+  articleDeleteClick: function(e) {
+    this.setState({hidden: true});
+    var index = this.props.data.index;
+    window.ee.emit('News.delete', index);
+  },
+
   render: function() {
     var author = this.props.data.author,
         text = this.props.data.text,
@@ -46,6 +53,11 @@ var Article = React.createClass({
 
     return (
       <div className="article">
+        <div
+          className='delete__btn'
+          onClick={this.articleDeleteClick}
+        >[x]</div>
+
         <p className="news__author">{author}:</p>
         <p className="news__text">{text}</p>
         <a href="#"
@@ -70,6 +82,8 @@ var News = React.createClass({
 
     if (data.length > 0) {
       newsTemplate = data.map(function(item, index) {
+        item.index = index;
+
         return (
           <div key={index}>
               <Article data={item}/>
@@ -77,11 +91,7 @@ var News = React.createClass({
         )
       })
     } else {
-      newsTemplate = function() {
-        return (
-          <p>No news</p>
-        )
-      }
+      newsTemplate = <p>No news</p>
     }
 
     return (
@@ -95,6 +105,7 @@ var News = React.createClass({
     );
   },
 });
+
 var Add = React.createClass({
   getInitialState: function() {
     return {
@@ -104,13 +115,14 @@ var Add = React.createClass({
 
   onBtnClickHandler: function(e) {
     e.preventDefault();
-    var  author  =  ReactDOM.findDOMNode(this.refs.new_author).value;
+    var author = ReactDOM.findDOMNode(this.refs.new_author).value;
     var text = ReactDOM.findDOMNode(this.refs.new_text).value;
+    var bigText = ReactDOM.findDOMNode(this.refs.new_bigText).value;
 
     var item = [{
       author: author,
       text: text,
-      bigText: '...'
+      bigText: bigText
     }];
 
     window.ee.emit('News.add', item);
@@ -119,9 +131,10 @@ var Add = React.createClass({
   onValidate: function(e)  {
     var author = ReactDOM.findDOMNode(this.refs.new_author).value.trim();
     var text = ReactDOM.findDOMNode(this.refs.new_text).value.trim();
+    var bigText = ReactDOM.findDOMNode(this.refs.new_bigText).value.trim();
     var agree = ReactDOM.findDOMNode(this.refs.checkrule).checked;
 
-    if (author && text && agree) {
+    if (author && text && bigText && agree) {
       this.setState({btnIsDisabled: false});
     } else {
       this.setState({btnIsDisabled: true});
@@ -135,7 +148,7 @@ var Add = React.createClass({
           type='text'
           className='add__author'
           defaultValue=''
-          placeholder='Enter a author'
+          placeholder='Author'
           ref='new_author'
           onChange={this.onValidate}
         />
@@ -143,8 +156,16 @@ var Add = React.createClass({
           type='textarea'
           className='add__text'
           defaultValue=''
-          placeholder='Enter a newstext'
+          placeholder='Preview'
           ref='new_text'
+          onChange={this.onValidate}
+        ></textarea>
+        <textarea
+          type='textarea'
+          className='add__text'
+          defaultValue=''
+          placeholder='Text'
+          ref='new_bigText'
           onChange={this.onValidate}
         ></textarea>
         <label className='add__checkrule'>
@@ -171,14 +192,22 @@ var App = React.createClass({
 
   componentDidMount: function() {
     var self = this;
+
     window.ee.addListener('News.add', function(item) {
       var nextNews = item.concat(self.state.news);
-      self.setState({news: nextNews});  // re-render
+      self.setState({news: nextNews});
+    });
+
+    window.ee.addListener('News.delete', function(index) {
+      var nextNews = self.state.news;
+      nextNews.splice(index, 1);
+      self.replaceState({news: nextNews});
     });
   },
 
   componentWillUnmount: function() {
     window.ee.removeListener('News.add');
+    window.ee.removeListener('News.delete');
   },
 
   render: function() {
