@@ -198,7 +198,7 @@ var App = React.createClass({
       self.setState({news: nextNews});
     });
 
-    window.ee.addListener('News.delete', function(index) {
+    window.ee.addListener('News.delete', function (index) {
       var nextNews = self.state.news;
       nextNews.splice(index, 1);
       self.replaceState({news: nextNews});
@@ -226,3 +226,5 @@ ReactDOM.render(
     <App/>,
     document.getElementById('root')
 );
+
+console.dir(window.ee);
