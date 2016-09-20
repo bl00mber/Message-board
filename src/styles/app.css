@@ -15,13 +15,16 @@ form {
 }
 
 .article {
-  background: #f9f9f9;
-  border: 1px solid #757575;
-  border-bottom: 5px solid #757575;
+  background: #f3f3f3;
+  border: 1px solid #e4e4e4;
   width: 600px;
-  margin: 0 0 10px;
+  margin: 0 0 17px;
   padding: 5px 10px;
   position: relative;
+}
+
+.article:hover {
+  box-shadow: 0 2px 5px rgba(0,0,0,0.5);
 }
 
 .news__author {
