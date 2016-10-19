@@ -1,11 +1,11 @@
-import React from 'react'
+import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import EventEmitter from 'event-emitter'
 import './styles/app.css'
 
 /* eslint-disable */
 
-var  notes = [
+const notes = [
   {
     author:  'Yves G',
     text:  "I didn't try the food. I wasn't there to eat, but to relax.",
@@ -23,52 +23,41 @@ var  notes = [
   }
 ];
 
+/* eslint-enable */
+
 window.ee = new EventEmitter();
 
-var Article = React.createClass({
-  propTypes: {
-    data: React.PropTypes.shape({
-      author: React.PropTypes.string.isRequired,
-      text: React.PropTypes.string.isRequired,
-      bigText: React.PropTypes.string.isRequired,
-      index: React.PropTypes.number.isRequired
-    })
-  },
+class Article extends Component {
+  constructor() {
+    super()
+    this.state = { hidden: true }
+  }
 
-  getInitialState: function() {
-    return {
-      hidden: true
-    }
-  },
-
-  readMoreClick: function(e) {
+  readMoreClick(e) {
     e.preventDefault();
-    this.setState({hidden: false});
-  },
+    this.setState({ hidden: false });
+  }
 
-  articleDeleteClick: function(e) {
-    this.setState({hidden: true});
-    var index = this.props.data.index;
+  articleDeleteClick() {
+    this.setState({ hidden: true });
+    const index = this.props.data.index;
     window.ee.emit('News.delete', index);
-  },
+  }
 
-  render: function() {
-    var author = this.props.data.author,
-        text = this.props.data.text,
-        bigText = this.props.data.bigText,
-        hidden = this.state.hidden;
+  render() {
+    const { author, text, bigText } = this.props.data
+    const hidden = this.state.hidden
 
     return (
-      <div className="article">
+      <div className='article'>
         <div
-          className='delete__btn'
-          onClick={this.articleDeleteClick}
+          className='delete__btn' onClick={::this.articleDeleteClick}
         >[x]</div>
 
-        <p className="news__author">{author}:</p>
-        <p className="news__text">{text}</p>
-        <a href="#"
-          onClick={this.readMoreClick}
+        <p className='news__author'>{author}:</p>
+        <p className='news__text'>{text}</p>
+        <a href='#'
+          onClick={::this.readMoreClick}
           className={'news__readmore' + (hidden ? '' : ' hidden')}>
           More..
         </a>
@@ -76,16 +65,21 @@ var Article = React.createClass({
       </div>
     )
   }
-});
+}
 
-var News = React.createClass({
-  propTypes: {
-    data: React.PropTypes.array.isRequired
-  },
+Article.propTypes = {
+  data: React.PropTypes.shape({
+    author: React.PropTypes.string.isRequired,
+    text: React.PropTypes.string.isRequired,
+    bigText: React.PropTypes.string.isRequired,
+    index: React.PropTypes.number.isRequired
+  })
+}
 
-  render: function() {
-    var data = this.props.data,
-        newsTemplate;
+class News extends Component {
+  render() {
+    const data = this.props.data;
+    let newsTemplate;
 
     if (data.length > 0) {
       newsTemplate = data.map(function(item, index) {
@@ -102,132 +96,124 @@ var News = React.createClass({
     }
 
     return (
-      <div className="news">
+      <div className='news'>
         {newsTemplate}
         <br/>
-        <b className={"news__count" + (data.length > 0 ? '' : ' hidden')}>
+        <b className={'news__count' + (data.length > 0 ? '' : ' hidden')}>
           Total news count: {data.length}
         </b>
       </div>
-    );
-  },
-});
+    )
+  }
+}
 
-var Add = React.createClass({
-  getInitialState: function() {
-    return {
-      btnIsDisabled: true
-    };
-  },
+News.propTypes = {
+  data: React.PropTypes.array.isRequired
+}
 
-  onBtnClickHandler: function(e) {
+class Add extends Component {
+  constructor() {
+    super()
+    this.state = { btnIsDisabled: true }
+  }
+
+  onBtnClickHandler(e) {
     e.preventDefault();
-    var author = ReactDOM.findDOMNode(this.refs.new_author).value;
-    var text = ReactDOM.findDOMNode(this.refs.new_text).value;
-    var bigText = ReactDOM.findDOMNode(this.refs.new_bigText).value;
+    const author = this.refs.author.value;
+    const text = this.refs.text.value;
+    const bigText = this.refs.bigText.value;
 
-    var item = [{
+    const item = [{
       author: author,
       text: text,
       bigText: bigText
     }];
 
     window.ee.emit('News.add', item);
-  },
+  }
 
-  onValidate: function(e)  {
-    var author = ReactDOM.findDOMNode(this.refs.new_author).value.trim();
-    var text = ReactDOM.findDOMNode(this.refs.new_text).value.trim();
-    var bigText = ReactDOM.findDOMNode(this.refs.new_bigText).value.trim();
-    var agree = ReactDOM.findDOMNode(this.refs.checkrule).checked;
+  onValidate() {
+    const author = this.refs.author.value.trim();
+    const text = this.refs.text.value.trim();
+    const bigText = this.refs.bigText.value.trim();
+    const agree = this.refs.agree.checked;
 
     if (author && text && bigText && agree) {
-      this.setState({btnIsDisabled: false});
+      this.setState({ btnIsDisabled: false });
     } else {
-      this.setState({btnIsDisabled: true});
+      this.setState({ btnIsDisabled: true });
     }
-  },
+  }
 
-  render: function() {
+  render() {
     return (
       <form>
         <input
-          type='text'
-          className='add__author'
-          defaultValue=''
-          placeholder='Author'
-          ref='new_author'
-          onChange={this.onValidate}
+          type='text' className='add__author'
+          defaultValue='' placeholder='Author'
+          ref='author' onChange={::this.onValidate}
         />
         <textarea
-          type='textarea'
-          className='add__text'
-          defaultValue=''
-          placeholder='Preview'
-          ref='new_text'
-          onChange={this.onValidate}
+          type='textarea' className='add__text'
+          defaultValue='' placeholder='Preview'
+          ref='text' onChange={::this.onValidate}
         ></textarea>
         <textarea
-          type='textarea'
-          className='add__text'
-          defaultValue=''
-          placeholder='Text'
-          ref='new_bigText'
-          onChange={this.onValidate}
+          type='textarea' className='add__text'
+          defaultValue='' placeholder='Text'
+          ref='bigText' onChange={::this.onValidate}
         ></textarea>
         <label className='add__checkrule'>
-          <input type='checkbox' ref='checkrule'
-           onChange={this.onValidate}/> I agree with rules
+          <input type='checkbox' ref='agree'
+           onChange={::this.onValidate}/> I agree with rules
         </label>
         <button
-          className='add__btn'
-          onClick={this.onBtnClickHandler}
-          ref='add_btn'
-          disabled={this.state.btnIsDisabled}
+          className='add__btn' onClick={::this.onBtnClickHandler}
+          ref='add_btn' disabled={this.state.btnIsDisabled}
         >Add</button>
       </form>
-    );
+    )
   }
-});
+}
 
-var App = React.createClass({
-  getInitialState: function() {
-    return {
-      news: notes
-    };
-  },
+class App extends Component {
+  constructor() {
+    super()
+    this.state = { news: notes }
+  }
 
-  componentDidMount: function() {
-    var self = this;
+  componentDidMount() {
+    let self = this;
 
     window.ee.on('News.add', function(item) {
-      var nextNews = item.concat(self.state.news);
-      self.setState({news: nextNews});
+      let nextNews = item.concat(self.state.news);
+      self.setState({ news: nextNews });
     });
 
     window.ee.on('News.delete', function (index) {
-      var nextNews = self.state.news;
+      let nextNews = self.state.news;
       nextNews.splice(index, 1);
-      self.replaceState({news: nextNews});
+      self.setState({ news: null });
+      self.setState({ news: nextNews });
     });
-  },
+  }
 
-  componentWillUnmount: function() {
+  componentWillUnmount() {
     window.ee.off('News.add');
     window.ee.off('News.delete');
-  },
+  }
 
-  render: function() {
+  render() {
     return (
-      <div className="app">
-          <h2>News</h2>
+      <div className='app'>
+          <h2>Notes list</h2>
           <Add/>
           <br/>
           <News data={this.state.news}/>
       </div>
-    );
+    )
   }
-});
+}
 
 ReactDOM.render(
     <App/>,
@@ -235,5 +221,3 @@ ReactDOM.render(
 );
 
 console.dir(window.ee);
-
-/* eslint-enable */
