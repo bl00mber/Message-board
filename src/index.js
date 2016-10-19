@@ -1,4 +1,11 @@
-var  my_news = [
+import React from 'react'
+import ReactDOM from 'react-dom'
+import EventEmitter from 'event-emitter'
+import './styles/app.css'
+
+/* eslint-disable */
+
+var  notes = [
   {
     author:  'Yves G',
     text:  "I didn't try the food. I wasn't there to eat, but to relax.",
@@ -138,7 +145,7 @@ var Add = React.createClass({
       this.setState({btnIsDisabled: false});
     } else {
       this.setState({btnIsDisabled: true});
-    };
+    }
   },
 
   render: function() {
@@ -186,19 +193,19 @@ var Add = React.createClass({
 var App = React.createClass({
   getInitialState: function() {
     return {
-      news: my_news
+      news: notes
     };
   },
 
   componentDidMount: function() {
     var self = this;
 
-    window.ee.addListener('News.add', function(item) {
+    window.ee.on('News.add', function(item) {
       var nextNews = item.concat(self.state.news);
       self.setState({news: nextNews});
     });
 
-    window.ee.addListener('News.delete', function (index) {
+    window.ee.on('News.delete', function (index) {
       var nextNews = self.state.news;
       nextNews.splice(index, 1);
       self.replaceState({news: nextNews});
@@ -206,8 +213,8 @@ var App = React.createClass({
   },
 
   componentWillUnmount: function() {
-    window.ee.removeListener('News.add');
-    window.ee.removeListener('News.delete');
+    window.ee.off('News.add');
+    window.ee.off('News.delete');
   },
 
   render: function() {
@@ -228,3 +235,5 @@ ReactDOM.render(
 );
 
 console.dir(window.ee);
+
+/* eslint-enable */

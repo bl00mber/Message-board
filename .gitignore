@@ -1,3 +1,15 @@
-bower_components
+git
+.DS_Store
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+ehthumbs.db
+Thumbs.db
+npm-debug.log
+book_img
+=======
 node_modules
-build
+dist

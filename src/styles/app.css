@@ -1,19 +1,15 @@
 body {
   font-size: 20px;
 }
-
 .hidden {
   display: none;
 }
-
 p {
   margin: 0 0 5px;
 }
-
 form {
   margin-bottom: 30px;
 }
-
 .article {
   background: #f3f3f3;
   border: 1px solid #e4e4e4;
@@ -22,27 +18,22 @@ form {
   padding: 5px 10px;
   position: relative;
 }
-
 .article:hover {
   box-shadow: 0 2px 5px rgba(0,0,0,0.5);
 }
-
 .news__author {
   text-decoration: underline;
 }
-
 .news__count {
   margin: 10px 0 0 0;
   display: block;
 }
-
 .add {
   margin: 0 5px 5px 0;
   width: 210px;
   border: 1px dashed rgba(0, 89, 181, 0.82);
   padding: 5px;
 }
-
 .add__author, .add__text, .add__btn, .add__checkrule {
   display: block;
   margin: 0 0 5px 0;
@@ -50,24 +41,20 @@ form {
   width: 610px;
   border: 1px solid rgba(0, 89, 181, 0.82);
 }
-
 .add__checkrule {
   border: none;
   font-size: 12px;
 }
-
 .add__btn {
   box-sizing: content-box;
   color: #FFF;
   text-transform: uppercase;
   background: #007DDC;
 }
-
 .add__btn:disabled {
   background: #CCC;
   color: #999;
 }
-
 .delete__btn {
   position: absolute;
   right: 10px;
