@@ -1,3 +1,8 @@
+var fs = require('fs');
+var babelrc = fs.readFileSync('./.babelrc');
+var config = JSON.parse(babelrc);
+require('babel-core/register')(config);
+
 const http = require('http');
 const express = require('express');
 const app = express();

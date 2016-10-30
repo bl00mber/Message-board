@@ -4,7 +4,7 @@
   "description": "Notes list",
   "main": "index.js",
   "scripts": {
-    "start": "node bin/server.js"
+    "start": "node server.js"
   },
   "author": "Nikita Lebedev",
   "license": "ISC",

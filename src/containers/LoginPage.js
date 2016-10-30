@@ -18,59 +18,63 @@ const validRegexp = /^[a-zA-Z0-9_]+$/;
 class Content extends Component {
   constructor() {
     super()
-    this.state = { username: '', password: '', errorUserText: '', errorPassText: '' }
+    this.state = { errorUserText: '', errorPassText: '' }
   }
   _handleTextFieldsChange(e) {
-    let value = e.target.value;
-    let target = e.target.hintText;
+    let target = e.target.parentNode.innerText.slice(0, 8),
+        value = e.target.value,
+        isValueValid = value.match(validRegexp);
 
     switch (target) {
       case 'Username':
-        switch (value) {
-          case '':
-            return this.setState({ errorUserText: 'Enter text here' });
+        if (value == '') {
+          this.setState({ errorUserText: 'Please enter username' });
+        }
 
-          case (!value.match(validRegexp)):
-            return this.setState({ errorUserText: 'Allowed only numbers and letters', buttonsDisabled: true });
+        if (isValueValid !== null) {
+          this.setState({ errorUserText: '' });
 
-          case (value.match(validRegexp)):
-            return this.setState({ username: e.target.value, errorUserText: '', buttonsDisabled: false })
+          this.state.errorPassText == '' ? this.setState({ buttonsDisabled: false }) : null;
+        } else {
+          this.setState({ errorUserText: 'Allowed only numbers and letters', buttonsDisabled: true });
         }
       return
 
       case 'Password':
-        switch (value) {
-          case '':
-            return this.setState({ errorPassText: 'Enter text here' });
+        if (value == '') {
+          this.setState({ errorPassText: 'Please enter password' });
+        }
 
-          case (!value.match(validRegexp)):
-            return this.setState({ errorPassText: 'Allowed only numbers and letters', buttonsDisabled: true });
+        if (isValueValid !== null) {
+          this.setState({ errorPassText: '' });
 
-          case (value.match(validRegexp)):
-            return this.setState({ password: e.target.value, errorPassText: '', buttonsDisabled: false })
+          this.state.errorUserText == '' ? this.setState({ buttonsDisabled: false }) : null;
+        } else {
+          this.setState({ errorPassText: 'Allowed only numbers and letters', buttonsDisabled: true });
         }
     }
   }
-  _checkText() {
-    let nickname = this.state.username,
-        password = this.state.password;
+  _buttonsHandler(isSignUp) {
+    let username = this.refs.username.input.value,
+        password = this.refs.password.input.value;
 
-    if (nickname && password) {
-      return true
-    } else {
-      this.setState({ buttonsDisabled: true })
-      return false
+    console.log(this.refs)
+
+    if (username == '') {
+      return this.setState({ errorUserText: 'Please enter username', buttonsDisabled: true });
+    } else if (password == '') {
+      return this.setState({ errorPassText: 'Please enter password', buttonsDisabled: true });
     }
+
+    isSignUp ?
+    this.props.userActions.createUser(username, password) :
+    this.props.userActions.logIn(username, password)
   }
   onlogInBtnClick() {
-    if (this._checkText()) {
-      this.props.userActions.logIn(this.state.username, this.state.password);
-    }
+    this._buttonsHandler(false)
   }
   onSignUpBtnClick() {
-    if (this._checkText()) {
-      this.props.userActions.createUser(this.state.username, this.state.password);
-    }
+    this._buttonsHandler(true)
   }
   render() {
     return (
@@ -79,19 +83,19 @@ class Content extends Component {
           <div className='login-form-header'>Login/Sign Up</div>
 
           <Paper zDepth={2}>
-            <TextField hintText='Username' style={inputStyle}
-             underlineShow={false} onChange={::this._handleTextFieldsChange} />
+            <TextField hintText='Username' style={inputStyle} errorText={this.state.errorUserText}
+             ref='username' underlineShow={false} onInput={::this._handleTextFieldsChange} />
             <Divider />
-            <TextField hintText='Password' style={inputStyle}
-             underlineShow={false} onChange={::this._handleTextFieldsChange} />
+            <TextField hintText='Password' style={inputStyle} errorText={this.state.errorPassText}
+             ref='password' underlineShow={false} onInput={::this._handleTextFieldsChange} />
             <Divider />
           </Paper>
 
           <div className='login-buttons'>
-            <RaisedButton label='Log in' primary={true} style={buttonStyle}
-             onClick={::this.onlogInBtnClick} />
-            <RaisedButton label='Sign up' secondary={true} style={buttonStyle}
-             onClick={::this.onSignUpBtnClick} />
+            <RaisedButton label='Log in' className='login' primary={true} style={buttonStyle}
+             onClick={::this.onlogInBtnClick} disabled={this.state.buttonsDisabled} />
+           <RaisedButton label='Sign up'  secondary={true} style={buttonStyle}
+             onClick={::this.onSignUpBtnClick} disabled={this.state.buttonsDisabled} />
           </div>
 
         </div>

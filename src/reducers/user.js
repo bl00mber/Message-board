@@ -19,12 +19,12 @@ export default function user(state = initialState, action) {
         isLogged: true, currentUserId: action.payload.currentUserId, error: '' }
 
     case LOGIN_FAIL:
-      return {...state, currentName: action.payload.currentName,
-        isLogged: false, currentUserId: '', error: action.payload.error }
+      return {...state, currentName: 'Anonym', isLogged: false,
+        currentUserId: '', error: action.payload.error }
 
     case LOGOUT_SUCCESS:
-      return {...state, currentName: action.payload.currentName,
-        isLogged: false, currentUserId: action.payload.currentUserId, error: '' }
+      return {...state, currentName: 'Anonym', isLogged: false,
+        currentUserId: '', error: '' }
 
     default:
       return state
