@@ -11,7 +11,7 @@ require('babel-polyfill').default;
 const TARGET = process.env.npm_lifecycle_event;
 
 const PATHS = {
-  app: path.join(__dirname, '../src'),
+  app: path.join(__dirname, '../client'),
   build: path.join(__dirname, '../dist'),
 };
 
@@ -38,7 +38,7 @@ const common = {
         test: /\.js$/,
         loaders: ['eslint'],
         include: [
-          path.resolve(__dirname, '../src'),
+          path.resolve(__dirname, '../client'),
         ],
       }
     ],

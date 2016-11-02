@@ -43,7 +43,10 @@
     "webpack-merge": "^0.15.0"
   },
   "dependencies": {
+    "body-parser": "^1.15.2",
+    "cors": "^2.8.1",
     "material-ui": "^0.16.1",
+    "mongoose": "^4.6.5",
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
     "react-redux": "^4.4.5",

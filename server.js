@@ -1,7 +1,11 @@
-var fs = require('fs');
-var babelrc = fs.readFileSync('./.babelrc');
-var config = JSON.parse(babelrc);
+const fs = require('fs');
+const babelrc = fs.readFileSync('./.babelrc');
+const config = JSON.parse(babelrc);
 require('babel-core/register')(config);
+
+// import cors from 'cors';
+// import bodyParser from 'body-parser';
+// import * as db from './server/utils/DataBaseUtils';
 
 const http = require('http');
 const express = require('express');
@@ -13,11 +17,11 @@ const app = express();
   const compiler = webpack(webpackConfig);
 
   app.use(require('webpack-dev-middleware')(compiler, {
-    noInfo: true, publicPath: webpackConfig.output.publicPath,
+    noInfo: true, publicPath: webpackConfig.output.publicPath
   }));
 
   app.use(require('webpack-hot-middleware')(compiler, {
-    log: console.log, path: '/__webpack_hmr', heartbeat: 10 * 1000,
+    log: console.log, path: '/__webpack_hmr', heartbeat: 10 * 1000
   }));
 
   app.use(express.static(__dirname + '/'));
@@ -26,6 +30,25 @@ const app = express();
 app.get(/.*/, function root(req, res) {
   res.sendFile(__dirname + '/index.html');
 });
+
+
+// db.setUpConnection();
+// app.use( bodyParser.json() );
+// app.use(cors({ origin: '*' }));
+//
+// // RESTful api handlers
+// app.get('/notesdb', (req, res) => {
+//     db.listNotes().then(data => res.send(data));
+// });
+//
+// app.post('/notesdb', (req, res) => {
+//     db.createNote(req.body).then(data => res.send(data));
+// });
+//
+// app.delete('/notesdb/:id', (req, res) => {
+//     db.deleteNote(req.params.id).then(data => res.send(data));
+// });
+
 
 const server = http.createServer(app);
 server.listen(process.env.PORT || 3000, function onListen() {
