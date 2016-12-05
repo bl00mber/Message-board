@@ -19,7 +19,8 @@ export default class AddForm extends Component {
     this.refs.text.value = value.replace(selText, newSelText);
 
     textNode.focus();
-    textNode.selectionEnd = (selEnd + 7);
+    textNode.selectionStart = (selStart + 3);
+    textNode.selectionEnd = (selEnd + 3);
   }
   addLorem() {
     this.refs.text.value = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
@@ -33,15 +34,16 @@ export default class AddForm extends Component {
   }
   onAddBtnClick() {
     this.setState({ btnIsDisabled: true })
-    const { currentName, currentUserId, addMessage } = this.props
+    const { createMessage } = this.props
 
-    let text = this.refs.text.value;
+    let data = { text: this.refs.text.value };
 
-    if (text == '') {
+    if (data.text == '') {
       return this.showWarningMessage()
     }
 
-    addMessage(currentName, currentUserId, text)
+    createMessage(data)
+    this.refs.text.value = '';
     this.setState({ btnIsDisabled: false })
   }
   render() {
@@ -61,20 +63,15 @@ export default class AddForm extends Component {
          placeholder='Enter text here...' defaultValue=''
          ref='text' spellCheck='false' />
 
-       <div className='add_text_tooltip' ref='tooltip'>Please enter text !</div>
+        <div className='add_text_tooltip' ref='tooltip'>Please enter text !</div>
 
-        <div
-          className='add_btn create' onClick={::this.onAddBtnClick}
-          disabled={this.state.btnIsDisabled}
-        >Create post</div>
+        <div className='add_btn create' onClick={::this.onAddBtnClick}
+         disabled={this.state.btnIsDisabled}>Create post</div>
       </div>
     )
   }
 }
 
 AddForm.propTypes = {
-  currentName: PropTypes.string.isRequired,
-  isLogged: PropTypes.bool.isRequired,
-  currentUserId: PropTypes.string.isRequired,
-  addMessage: PropTypes.func.isRequired
+  createMessage: PropTypes.func.isRequired
 }

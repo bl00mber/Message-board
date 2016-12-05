@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import * as userActions from '../actions/UserActions'
+import UserActions from '../actions/UserActions'
 
-import '../styles/LoginPage.styl'
+import '../styles/EnterPage.styl'
 
 import Divider from 'material-ui/Divider';
 import Paper from 'material-ui/Paper';
@@ -16,9 +16,19 @@ const buttonStyle = { margin: 12 };
 const validRegexp = /^[a-zA-Z0-9_]+$/;
 
 class Content extends Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = { errorUserText: '', errorPassText: '' }
+  }
+  componentDidUpdate() {
+    if (this.props.user.error) {
+      this.refs.tooltip.style.opacity = 0.8;
+
+      setTimeout(() => {
+        this.refs.tooltip.style.opacity = 0;
+        this.props.user.error = '';
+      }, 5000);
+    }
   }
   _handleTextFieldsChange(e) {
     let target = e.target.parentNode.innerText.slice(0, 8),
@@ -56,9 +66,8 @@ class Content extends Component {
   }
   _buttonsHandler(isSignUp) {
     let username = this.refs.username.input.value,
-        password = this.refs.password.input.value;
-
-    console.log(this.refs)
+        password = this.refs.password.input.value,
+        data = { username, password };
 
     if (username == '') {
       return this.setState({ errorUserText: 'Please enter username', buttonsDisabled: true });
@@ -67,8 +76,8 @@ class Content extends Component {
     }
 
     isSignUp ?
-    this.props.userActions.createUser(username, password) :
-    this.props.userActions.logIn(username, password)
+    this.props.userActions.signUp(data) :
+    this.props.userActions.logIn(data)
   }
   onlogInBtnClick() {
     this._buttonsHandler(false)
@@ -79,26 +88,28 @@ class Content extends Component {
   render() {
     return (
       <div className='login-page'>
-        <div className='login-form'>
+        <form className='login-form'>
           <div className='login-form-header'>Login/Sign Up</div>
 
           <Paper zDepth={2}>
             <TextField hintText='Username' style={inputStyle} errorText={this.state.errorUserText}
-             ref='username' underlineShow={false} onInput={::this._handleTextFieldsChange} />
+             ref='username' underlineShow={false} name='username' onInput={::this._handleTextFieldsChange} />
             <Divider />
             <TextField hintText='Password' style={inputStyle} errorText={this.state.errorPassText}
-             ref='password' underlineShow={false} onInput={::this._handleTextFieldsChange} />
+             ref='password' underlineShow={false} name='password' onInput={::this._handleTextFieldsChange} />
             <Divider />
           </Paper>
+
+          <div className='add_text_tooltip' ref='tooltip'>Please enter another username or password !</div>
 
           <div className='login-buttons'>
             <RaisedButton label='Log in' className='login' primary={true} style={buttonStyle}
              onClick={::this.onlogInBtnClick} disabled={this.state.buttonsDisabled} />
-           <RaisedButton label='Sign up'  secondary={true} style={buttonStyle}
+           <RaisedButton label='Sign up' secondary={true} style={buttonStyle}
              onClick={::this.onSignUpBtnClick} disabled={this.state.buttonsDisabled} />
           </div>
 
-        </div>
+        </form>
       </div>
     )
   }
@@ -112,7 +123,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    userActions: bindActionCreators(userActions, dispatch)
+    userActions: bindActionCreators(UserActions, dispatch)
   }
 }
 

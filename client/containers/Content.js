@@ -3,21 +3,19 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import AddForm from '../components/AddForm'
 import Messages from '../components/Messages'
-import * as pageActions from '../actions/PageActions'
-import * as userActions from '../actions/UserActions'
+import MessageActions from '../actions/MessageActions'
+import UserActions from '../actions/UserActions'
 
 class Content extends Component {
   render() {
-    const { currentName, isLogged, currentUserId } = this.props.user
     const { messages } = this.props.page
-    const { getMessages, addMessage, removeMessage } = this.props.pageActions
+    const { loadMessages, createMessage, deleteMessage } = this.props.messageActions
 
     return (
       <div className='content-page'>
-        <AddForm currentName={currentName} isLogged={isLogged}
-         currentUserId={currentUserId} addMessage={addMessage} />
-        <Messages messages={messages} removeMessage={removeMessage}
-         getMessages={getMessages} />
+        <AddForm createMessage={createMessage} />
+       <Messages messages={messages} deleteMessage={deleteMessage}
+         loadMessages={loadMessages} />
       </div>
     )
   }
@@ -32,8 +30,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    pageActions: bindActionCreators(pageActions, dispatch),
-    userActions: bindActionCreators(userActions, dispatch)
+    messageActions: bindActionCreators(MessageActions, dispatch),
+    userActions: bindActionCreators(UserActions, dispatch)
   }
 }
 

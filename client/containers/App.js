@@ -1,10 +1,19 @@
 import React, { Component } from 'react'
+import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
+import UserActions from '../actions/UserActions'
 
 import '../styles/App.styl'
 
 class App extends Component {
+  constructor(props) {
+    super(props)
+    this.props.userActions.restoreSession()
+  }
+  logOut() {
+    this.props.userActions.logOut()
+  }
   render() {
     const { currentName, isLogged } = this.props.user;
 
@@ -12,7 +21,7 @@ class App extends Component {
       <div>
         <div className='header-background'>
           <div className='header-container'>
-            <Link to='/' className='header-logo'>Notes list</Link>
+            <Link to='/' className='header-logo'>Messages</Link>
             <div>
               <p className='header-status'>You are logged in as
                 <span> {currentName}</span>
@@ -22,9 +31,9 @@ class App extends Component {
                 <div>
                 {
                   isLogged ?
-                  <div className='header-login-button'>{currentName}Log Out</div>
+                  <div className='header-login-button' onClick={::this.logOut}>Log Out</div>
                   :
-                  <Link to='login' className='header-login-button'>Log In</Link>
+                  <Link to='enter' className='header-login-button'>Log In</Link>
                 }
                 </div>
                 :
@@ -47,4 +56,10 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps)(App)
+function mapDispatchToProps(dispatch) {
+  return {
+    userActions: bindActionCreators(UserActions, dispatch)
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App)

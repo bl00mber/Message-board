@@ -1,10 +1,11 @@
 {
-  "name": "notes",
+  "name": "message-board",
   "version": "1.0.0",
   "description": "Notes list",
   "main": "index.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "NODE_ENV=development node server/index.js",
+    "nodemon": "NODE_ENV=development nodemon server/index.js"
   },
   "author": "Nikita Lebedev",
   "license": "ISC",
@@ -22,16 +23,14 @@
     "eslint": "^1.10.3",
     "eslint-loader": "^1.2.1",
     "eslint-plugin-react": "^3.16.1",
-    "estraverse-fb": "^1.3.1",
-    "express": "^4.14.0",
     "extract-text-webpack-plugin": "^1.0.1",
     "file-loader": "^0.9.0",
     "imports-loader": "^0.6.5",
+    "json-loader": "^0.5.4",
     "npm-install-webpack-plugin": "^2.0.2",
     "postcss-import": "^8.1.2",
     "postcss-loader": "^1.0.0",
     "redux-logger": "^2.7.0",
-    "redux-thunk": "^2.1.0",
     "resolve-url-loader": "^1.6.0",
     "style-loader": "^0.13.1",
     "stylus-loader": "^2.3.1",
@@ -43,16 +42,23 @@
     "webpack-merge": "^0.15.0"
   },
   "dependencies": {
+    "axios": "^0.15.3",
     "body-parser": "^1.15.2",
+    "connect-mongo": "^1.3.2",
     "cors": "^2.8.1",
+    "express": "^4.14.0",
+    "express-session": "^1.14.2",
     "material-ui": "^0.16.1",
     "mongoose": "^4.6.5",
+    "passport": "^0.3.2",
+    "passport-local": "^1.0.0",
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
     "react-redux": "^4.4.5",
     "react-router": "^2.8.1",
     "react-tap-event-plugin": "^1.0.0",
     "redux": "^3.6.0",
+    "redux-thunk": "^2.1.0",
     "stylus": "^0.54.5"
   }
 }

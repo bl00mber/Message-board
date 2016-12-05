@@ -1,14 +1,47 @@
 .messages_container
+  color #505050
+  padding 5px 25px
   min-height 400px
   background #ffffff
   flex-grow 3
   box-shadow inset 2px -2px 10px rgba(0,0,0,0.12)
-  text-align center
   &:hover
     box-shadow inset 2px -2px 10px rgba(0,0,0,0.17)
 
 .messages_not_found
+  text-align center
   color #dcdcdc
-  font-size 30px
+  font-size 27px
   font-weight 700
   padding-top 135px
+
+.msg_container
+  position relative
+  background #f1f2f3
+  border-radius 5px
+  padding 7px 25px 27px 25px
+  margin 20px 0
+
+.msg_creator_name
+  padding 0px
+  margin-bottom 12px
+
+.msg_date
+  position absolute
+  right 30px
+  top 8px
+
+.msg_text
+  font-weight 300
+  font-size 19px
+  margin 0
+
+.msg_text.continue
+  display none
+
+.msg_text_more
+  text-decoration underline
+  margin-bottom 0
+  &:hover
+    text-decoration none
+    cursor pointer

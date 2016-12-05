@@ -65,6 +65,10 @@ const common = {
       loaders: ['babel-loader'],
       exclude: /node_modules/,
     }, {
+      test: /\.json$/,
+      loaders: ['json-loader'],
+      exclude: /node_modules/,
+    }, {
       test: /\.png$/,
       loader: 'file?name=[name].[ext]',
     }, {

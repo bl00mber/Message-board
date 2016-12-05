@@ -1,24 +1,25 @@
 import {
-  GET_MESSAGES,
-  CREATE_MESSAGE,
-  DELETE_MESSAGE
+  LOAD_MESSAGES_REQUEST,
+  LOAD_MESSAGES_SUCCESS,
+  LOAD_MESSAGES_FAIL
 } from '../constants/Page'
 
 const initialState = {
-  messages: []
+  messages: [],
+  error: ''
 }
 
 export default function page(state = initialState, action) {
 
   switch (action.type) {
-    case GET_MESSAGES:
-      return { ...state, messages: action.messages }
+    case LOAD_MESSAGES_REQUEST:
+      return { ...state, error: '' }
 
-    case CREATE_MESSAGE:
-      return { ...state, messages: action.messages }
+    case LOAD_MESSAGES_SUCCESS:
+      return { ...state, messages: action.messages, error: '' }
 
-    case DELETE_MESSAGE:
-      return { ...state, messages: action.messages }
+    case LOAD_MESSAGES_FAIL:
+      return { ...state, error: action.error }
 
     default:
       return state;

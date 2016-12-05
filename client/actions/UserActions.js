@@ -1,46 +1,90 @@
+import { browserHistory } from 'react-router'
 import {
   LOGIN_SUCCESS,
   LOGIN_FAIL,
   LOGOUT_SUCCESS
 } from '../constants/User'
 
-/* eslint-disable */
+import api from '../api'
 
-export function logIn(username, password) {
+const UserActions = {
+  _loginHandler(dispatch, data) {
+    api.logIn(data)
+      .then(({ data }) => {
+          dispatch({
+            type: LOGIN_SUCCESS,
+            payload: {
+              currentName: data.username,
+              color: data.color
+            }
+          })
+          browserHistory.push('/')
+        }
+      )
+      .catch(err =>
+          dispatch({
+            type: LOGIN_FAIL,
+            error: err
+          })
+      );
+  },
 
-  return (dispatch) => {
-    dispatch({
-      type: LOGIN_SUCCESS
-    })
+  logIn(data) {
+    return (dispatch) => {
+      UserActions._loginHandler(dispatch, data)
+    }
+  },
 
-    dispatch({
-      type: LOGIN_FAIL
-    })
+  signUp(data) {
+    return (dispatch) => {
+      api.createUser(data)
+        .then(({ data }) => {
+          UserActions._loginHandler(dispatch, data)
+        })
+        .catch(err =>
+            dispatch({
+              type: LOGIN_FAIL,
+              error: err
+            })
+        );
+    }
+  },
+
+  restoreSession() {
+    return (dispatch) => {
+      api.restoreSession()
+        .then(({ data }) => {
+            dispatch({
+              type: LOGIN_SUCCESS,
+              payload: {
+                currentName: data.username,
+                color: data.color
+              }
+            })
+          }
+        )
+        .catch(err =>
+            dispatch({
+              type: LOGOUT_SUCCESS,
+              error: err
+            })
+        );
+    }
+  },
+
+  logOut() {
+    return (dispatch) => {
+      api.logOut()
+        .then(() =>
+          dispatch({
+            type: LOGOUT_SUCCESS
+          })
+        )
+        .catch(err =>
+            console.error(err)
+        );
+    }
   }
-
 }
 
-export function signUp(username, password) {
-
-  // let userIdArray = ["N","i","k","i",'t','a',3,'D','e',3,2,5,'F','G','g'];
-  // let userId = userIdArray.sort(function(a,b){return 0.4*10<5}).slice(0,5);
-
-  return (dispatch) => {
-    dispatch({
-      type: CREATE_MESSAGE
-    })
-  }
-
-}
-
-export function logOut() {
-
-  return (dispatch) => {
-    dispatch({
-      type: LOGOUT_SUCCESS
-    })
-  }
-
-}
-
-/* eslint-enable */
+export default UserActions
