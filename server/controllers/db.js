@@ -1,8 +1,13 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-// process.env.MONGODB_URI lets the db params be set by Heroku
-const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/boarddb';
+// AWS cloud MongoDB hosting
+let mongoURI;
+if (process.env.NODE_ENV === 'production') {
+  mongoURI = 'mongodb://bloomber-mlab-user:sdaYDh2d@ds127428.mlab.com:27428/mongo-board';
+} else {
+  mongoURI = 'mongodb://localhost:27017/boarddb';
+}
 
 /**
  * Message model
