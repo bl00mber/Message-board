@@ -71,6 +71,7 @@ module.exports = {
     return User.findOne(id)
   },
   logIn(req, res, next) {
+    console.dir(req.body)
     return User
       .findOne({ username: req.body.username })
       .then((user) => {

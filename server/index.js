@@ -14,31 +14,27 @@ if (process.env.NODE_ENV === 'development') {
   const compiler = webpack(config);
 
   app.use(require('webpack-dev-middleware')(compiler, { noInfo: true, publicPath: config.output.publicPath }));
-  app.use(require('webpack-hot-middleware')(compiler, {
-    log: console.log,
-    path: '/__webpack_hmr',
-    heartbeat: 10 * 1000
-  }));
+  app.use(require('webpack-hot-middleware')(compiler));
 }
 
 const htmlTemplate = () => {
   return `
     <!DOCTYPE html>
-    <html lang="en">
+    <html>
       <head>
         <title>Message board</title>
       </head>
       <body>
         <div id="root"></div>
-        <script src="/dist/bundle.js"></script>
+        <script src="/static/client.js"></script>
       </body>
     </html>
   `;
 }
 
-// Production middlewares
-if (process.env.NODE_ENV !== 'development') {
-  app.use('/static', express.static(__dirname + '/static'));
+// Production middleware
+if (process.env.NODE_ENV === 'production') {
+  app.use('/static', express.static(__dirname + './../dist'));
 }
 
 // MongoDB connect
@@ -55,10 +51,10 @@ app.use(session({
   store: new MongoStore({
       url: `mongodb://${config.db.host}:${config.db.port}/${config.db.name}`,
       autoRemove: 'interval',
-      autoRemoveInterval: 10 // In minutes
+      autoRemoveInterval: 10 // Minutes
     })
 }))
-//
+
 /* *
  * Messages api handlers
  */
@@ -98,8 +94,8 @@ app.get('/enter', (req, res) => {
   (req.session.user) ? res.redirect('/') : res.send(htmlTemplate());
 });
 
-// Client-side routing
-app.get(/.*/, (req, res) => {
+// Client-side routing excluding static files
+app.get(/^(?!\/static\/).*/, (req, res) => {
   res.send(htmlTemplate())
 });
 

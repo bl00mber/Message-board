@@ -1,13 +1,6 @@
 const webpack = require('webpack');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
-  devtool: 'source-map',
-
-  output: {
-    publicPath: 'dist/',
-  },
-
   module: {
     loaders: [{
       test: /\.css$/,
@@ -25,12 +18,12 @@ module.exports = {
       },
       __DEVELOPMENT__: false,
     }),
-    new ExtractTextPlugin('bundle.css'),
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.optimize.UglifyJsPlugin({
       compress: {
         warnings: false,
+        drop_console: true
       },
     }),
   ],

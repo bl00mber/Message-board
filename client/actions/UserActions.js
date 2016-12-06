@@ -19,8 +19,7 @@ const UserActions = {
             }
           })
           browserHistory.push('/')
-        }
-      )
+      })
       .catch(err =>
           dispatch({
             type: LOGIN_FAIL,
@@ -54,15 +53,16 @@ const UserActions = {
     return (dispatch) => {
       api.restoreSession()
         .then(({ data }) => {
-            dispatch({
-              type: LOGIN_SUCCESS,
-              payload: {
-                currentName: data.username,
-                color: data.color
-              }
-            })
-          }
-        )
+            if (data) {
+              dispatch({
+                type: LOGIN_SUCCESS,
+                payload: {
+                  currentName: data.username,
+                  color: data.color
+                }
+              })
+            }
+        })
         .catch(err =>
             dispatch({
               type: LOGOUT_SUCCESS,

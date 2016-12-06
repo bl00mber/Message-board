@@ -1,14 +1,15 @@
 const webpack = require('webpack');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
   devtool: 'cheap-module-eval-source-map',
+
   entry: [
     'webpack-hot-middleware/client',
     './client/index',
   ],
+
   output: {
-    publicPath: '/dist/',
+    publicPath: '/static/',
   },
 
   module: {
@@ -28,7 +29,6 @@ module.exports = {
       },
       __DEVELOPMENT__: true,
     }),
-    new ExtractTextPlugin('bundle.css'),
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin()
