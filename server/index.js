@@ -4,7 +4,9 @@ const bodyParser = require('body-parser');
 const db = require('./controllers/db');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
-const config = require('../config/config.json')
+
+// process.env.MONGODB_URI lets the db params be set by Heroku
+const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/boarddb';
 
 const app = express();
 
@@ -49,7 +51,7 @@ app.use(session({
   saveUninitialized: true,
   secret: 'secret',
   store: new MongoStore({
-      url: `mongodb://${config.db.host}:${config.db.port}/${config.db.name}`,
+      url: mongoURI,
       autoRemove: 'interval',
       autoRemoveInterval: 10 // Minutes
     })

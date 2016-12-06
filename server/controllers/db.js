@@ -1,6 +1,8 @@
-const config = require('../../config/config.json');
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+
+// process.env.MONGODB_URI lets the db params be set by Heroku
+const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/boarddb';
 
 /**
  * Message model
@@ -36,7 +38,7 @@ const User = mongoose.model('User');
 module.exports = {
   setUpConnection() {
     mongoose.Promise = global.Promise;
-    mongoose.connect(`mongodb://${config.db.host}:${config.db.port}/${config.db.name}`);
+    mongoose.connect(mongoURI);
   },
 
   // Message model utils

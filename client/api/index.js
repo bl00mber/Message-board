@@ -1,35 +1,33 @@
 import axios from 'axios';
 
-import { apiPrefix } from '../../config/config.json';
-
 export default {
     // Messages
     loadMessages() {
-        return axios.get(`${apiPrefix}/messages`);
+        return axios.get(`/messages`);
     },
 
     createMessage(data) {
-        return axios.post(`${apiPrefix}/messages`, data);
+        return axios.post(`/messages`, data);
     },
 
     deleteMessage(messageId) {
-        return axios.delete(`${apiPrefix}/messages/${messageId}`);
+        return axios.delete(`/messages/${messageId}`);
     },
 
     // Users
     logIn(data) {
-        return axios.post(`${apiPrefix}/login`, data);
+        return axios.post(`/login`, data);
     },
 
     createUser(data) {
-        return axios.post(`${apiPrefix}/create-user`, data);
+        return axios.post(`/create-user`, data);
     },
 
     restoreSession() {
-        return axios.get(`${apiPrefix}/restore-session`);
+        return axios.get(`/restore-session`);
     },
 
     logOut() {
-        return axios.get(`${apiPrefix}/logout`);
+        return axios.get(`/logout`);
     }
 }
