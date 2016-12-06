@@ -17,7 +17,7 @@ const MessageSchema = new Schema({
   color     : { type: String },
   text      : { type: String },
   createdAt : { type: Date }
-}, { capped: 1024 });
+}, { capped: true, size: 1024 });
 
 mongoose.model('Message', MessageSchema);
 
@@ -30,7 +30,7 @@ const UserSchema = new Schema({
   username  : { type: String, unique: true, required: true },
   password  : { type: String, required: true },
   color     : { type: String }
-}, { capped: 1024 });
+}, { capped: true, size: 1024 });
 
 mongoose.model('User', UserSchema);
 
@@ -59,7 +59,7 @@ module.exports = {
         };
       }
 
-      let newText = data.text.replace(/<[^>]+>/g,'').replace(/\[b\]/,'<b>').replace(/\[\/b\]/,'</b>').replace(/\[i\]/,'<i>').replace(/\[\/i\]/,'</i>').replace(/\[s\]/,'<s>').replace(/\[\/s\]/,'</s>');
+      let newText = data.text.replace(/<[^>]+>/g,'').replace(/\[b\]/g,'<b>').replace(/\[\/b\]/g,'</b>').replace(/\[i\]/g,'<i>').replace(/\[\/i\]/g,'</i>').replace(/\[s\]/g,'<s>').replace(/\[\/s\]/g,'</s>');
 
       const message = new Message({
           username: user.username,
