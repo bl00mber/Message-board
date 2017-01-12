@@ -8,8 +8,8 @@ import UserActions from '../actions/UserActions'
 
 class Content extends Component {
   render() {
-    const { messages } = this.props.page
-    const { loadMessages, createMessage, deleteMessage } = this.props.messageActions
+    const { messages } = this.props.page;
+    const { loadMessages, createMessage, deleteMessage } = this.props.messageActions;
 
     return (
       <div className='content-page'>

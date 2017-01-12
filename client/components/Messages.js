@@ -5,12 +5,12 @@ import '../styles/Messages.styl'
 export default class Messages extends Component {
   constructor(props) {
     super(props)
-    this.props.loadMessages()
+    this.props.loadMessages();
   }
-  onDeleteBtnClick() {
+  onDeleteBtnClick = () => {
     this.props.deleteMessage()
   }
-  expandBtn(e) {
+  expandBtn = (e) => {
     e.target.nextSibling.style.display = 'block';
     e.target.style.display = 'none';
   }
@@ -27,7 +27,7 @@ export default class Messages extends Component {
               + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
 
               return <div key={index} className='msg_container'>
-                <div className='msg_remove_button' onClick={::this.onDeleteBtnClick}></div>
+                <div className='msg_remove_button' onClick={this.onDeleteBtnClick}></div>
 
                 <p className='msg_creator_name'>Created by
                   <span style={{color: item.color}}> {item.username}</span>
@@ -38,7 +38,7 @@ export default class Messages extends Component {
                 <p className='msg_text' dangerouslySetInnerHTML={{__html: item.text.slice(0, 700)}}></p>
                 {
                   (item.text.length > 700) ?
-                  <p className='msg_text_more' onClick={::this.expandBtn}>Load more...</p> : ''
+                  <p className='msg_text_more' onClick={this.expandBtn}>Load more...</p> : ''
                 }
                 <p className='msg_text continue' dangerouslySetInnerHTML={{__html: item.text.slice(700)}}></p>
               </div>

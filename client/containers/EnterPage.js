@@ -18,7 +18,7 @@ const validRegexp = /^[a-zA-Z0-9_]+$/;
 class Content extends Component {
   constructor(props) {
     super(props)
-    this.state = { errorUserText: '', errorPassText: '' }
+    this.state = { errorUserText: '', errorPassText: '' };
   }
   componentDidUpdate() {
     if (this.props.user.error) {
@@ -30,7 +30,7 @@ class Content extends Component {
       }, 5000);
     }
   }
-  _handleTextFieldsChange(e) {
+  handleTextFieldsChange = (e) => {
     let target = e.target.parentNode.innerText.slice(0, 8),
         value = e.target.value,
         isValueValid = value.match(validRegexp);
@@ -64,7 +64,7 @@ class Content extends Component {
         }
     }
   }
-  _buttonsHandler(isSignUp) {
+  _buttonsHandler = (isSignUp) => {
     let username = this.refs.username.input.value,
         password = this.refs.password.input.value,
         data = { username, password };
@@ -79,10 +79,10 @@ class Content extends Component {
     this.props.userActions.signUp(data) :
     this.props.userActions.logIn(data)
   }
-  onlogInBtnClick() {
+  onlogInBtnClick = () => {
     this._buttonsHandler(false)
   }
-  onSignUpBtnClick() {
+  onSignUpBtnClick = () => {
     this._buttonsHandler(true)
   }
   render() {
@@ -93,10 +93,10 @@ class Content extends Component {
 
           <Paper zDepth={2}>
             <TextField hintText='Username' style={inputStyle} errorText={this.state.errorUserText}
-             ref='username' underlineShow={false} name='username' onInput={::this._handleTextFieldsChange} />
+             ref='username' underlineShow={false} name='username' onInput={this.handleTextFieldsChange} />
             <Divider />
             <TextField hintText='Password' style={inputStyle} errorText={this.state.errorPassText}
-             ref='password' underlineShow={false} name='password' onInput={::this._handleTextFieldsChange} />
+             ref='password' underlineShow={false} name='password' onInput={this.handleTextFieldsChange} />
             <Divider />
           </Paper>
 
@@ -104,9 +104,9 @@ class Content extends Component {
 
           <div className='login-buttons'>
             <RaisedButton label='Log in' className='login' primary={true} style={buttonStyle}
-             onClick={::this.onlogInBtnClick} disabled={this.state.buttonsDisabled} />
+             onClick={this.onlogInBtnClick} disabled={this.state.buttonsDisabled} />
            <RaisedButton label='Sign up' secondary={true} style={buttonStyle}
-             onClick={::this.onSignUpBtnClick} disabled={this.state.buttonsDisabled} />
+             onClick={this.onSignUpBtnClick} disabled={this.state.buttonsDisabled} />
           </div>
 
         </form>

@@ -9,9 +9,9 @@ import '../styles/App.styl'
 class App extends Component {
   constructor(props) {
     super(props)
-    this.props.userActions.restoreSession()
+    this.props.userActions.restoreSession();
   }
-  logOut() {
+  logOut = () => {
     this.props.userActions.logOut()
   }
   render() {
@@ -31,7 +31,7 @@ class App extends Component {
                 <div>
                 {
                   isLogged ?
-                  <div className='header-login-button' onClick={::this.logOut}>Log Out</div>
+                  <div className='header-login-button' onClick={this.logOut}>Log Out</div>
                   :
                   <Link to='enter' className='header-login-button'>Log In</Link>
                 }
