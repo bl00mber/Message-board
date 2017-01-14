@@ -4,29 +4,30 @@ import '../styles/Messages.styl'
 
 export default class Messages extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.props.loadMessages();
   }
   onDeleteBtnClick = () => {
-    this.props.deleteMessage()
+    this.props.deleteMessage();
   }
   expandBtn = (e) => {
     e.target.nextSibling.style.display = 'block';
     e.target.style.display = 'none';
   }
   render() {
-    const { messages } = this.props
+    const { messages } = this.props;
 
     return (
       <div className='messages_container'>
         {
           (messages.length !== 0) ?
           messages.map((item, index) => {
-              let date = new Date(item.createdAt);
-              date = date.getDay() + '/' + date.getMonth() + '/' + date.getFullYear()
-              + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+            let date = new Date(item.createdAt);
+            date = date.getDay() + '/' + date.getMonth() + '/' + date.getFullYear()
+            + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
 
-              return <div key={index} className='msg_container'>
+            return (
+              <div key={index} className='msg_container'>
                 <div className='msg_remove_button' onClick={this.onDeleteBtnClick}></div>
 
                 <p className='msg_creator_name'>Created by
@@ -42,7 +43,8 @@ export default class Messages extends Component {
                 }
                 <p className='msg_text continue' dangerouslySetInnerHTML={{__html: item.text.slice(700)}}></p>
               </div>
-            })
+            )
+          })
           :
           <p className='messages_not_found'>No messages here.</p>
         }

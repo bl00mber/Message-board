@@ -4,7 +4,7 @@ import '../styles/AddForm.styl'
 
 export default class AddForm extends Component {
   constructor() {
-    super()
+    super();
     this.state = { btnIsDisabled: false };
   }
   formatText = (e) => {
@@ -29,7 +29,7 @@ export default class AddForm extends Component {
     let data = { text: this.refs.text.value };
 
     if (data.text == '') {
-      return this.showWarningMessage()
+      return this.showWarningMessage();
     }
 
     createMessage(data)

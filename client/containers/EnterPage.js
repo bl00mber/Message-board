@@ -17,7 +17,7 @@ const validRegexp = /^[a-zA-Z0-9_]+$/;
 
 class Content extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = { errorUserText: '', errorPassText: '' };
   }
   componentDidUpdate() {

@@ -8,11 +8,11 @@ import '../styles/App.styl'
 
 class App extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.props.userActions.restoreSession();
   }
   logOut = () => {
-    this.props.userActions.logOut()
+    this.props.userActions.logOut();
   }
   render() {
     const { currentName, isLogged } = this.props.user;
