@@ -14,7 +14,7 @@ class Content extends Component {
     return (
       <div className='content-page'>
         <AddForm createMessage={createMessage} />
-       <Messages messages={messages} deleteMessage={deleteMessage}
+        <Messages messages={messages} deleteMessage={deleteMessage}
          loadMessages={loadMessages} />
       </div>
     )
